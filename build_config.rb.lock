@@ -4,11 +4,6 @@ mruby_version:
   release_no: 20102
 builds:
   host:
-    https://github.com/Asmod4n/mruby-linenoise.git:
-      url: https://github.com/Asmod4n/mruby-linenoise.git
-      branch: HEAD
-      commit: 464d0b503e3c268524de089c885d5741f0bb99ff
-      version: 0.0.0
     https://github.com/pyama86/mruby-signal-thread.git:
       url: https://github.com/pyama86/mruby-signal-thread.git
       branch: master
@@ -79,12 +74,12 @@ builds:
       branch: master
       commit: 66cf135ff9642d96a6127a79b307f6314e606deb
       version: 0.0.0
-  mirb:
-    https://github.com/Asmod4n/mruby-linenoise.git:
-      url: https://github.com/Asmod4n/mruby-linenoise.git
+    https://github.com/buty4649/mruby-linenoise.git:
+      url: https://github.com/buty4649/mruby-linenoise.git
       branch: HEAD
-      commit: 464d0b503e3c268524de089c885d5741f0bb99ff
+      commit: 4b6b5388b8f6c6140f30d2c1368bcc62e5c71e80
       version: 0.0.0
+  mirb:
     https://github.com/pyama86/mruby-signal-thread.git:
       url: https://github.com/pyama86/mruby-signal-thread.git
       branch: master
@@ -144,6 +139,11 @@ builds:
       url: https://github.com/ksss/mruby-file-stat.git
       branch: master
       commit: 66cf135ff9642d96a6127a79b307f6314e606deb
+      version: 0.0.0
+    https://github.com/buty4649/mruby-linenoise.git:
+      url: https://github.com/buty4649/mruby-linenoise.git
+      branch: HEAD
+      commit: 4b6b5388b8f6c6140f30d2c1368bcc62e5c71e80
       version: 0.0.0
   fdtest:
     https://github.com/gromnitsky/mruby-dir-glob.git:

@@ -206,7 +206,8 @@ int yylex(void* lval, parser_state* p) {
 
 void yyerror(parser_state* p, const char* s){
     mrb_value str = mrb_str_new_cstr(p->state, s);
-    mrb_funcall(p->state, p->action, "on_error", 1, str);
+    mrb_value state = mrb_funcall(p->state, p->lexer, "state", 0);
+    mrb_funcall(p->state, p->action, "on_error", 2, str, state);
 }
 
 

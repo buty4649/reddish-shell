@@ -47,8 +47,8 @@ module ReddishParser
     end
 
     def number_token
-      if number = @line.slice!(/^\d+(?=[<>])/) ||
-        ([:"<&", :">&"].include?(@last_token) && number = @line.slice!(/^\d+/))
+      if number = @line.slice!(/\A\d+(?=[<>])/) ||
+        ([:"<&", :">&"].include?(@last_token) && number = @line.slice!(/\A\d+/))
         Token.new(:number, number)
       end
     end
@@ -62,14 +62,14 @@ module ReddishParser
     def keyword_token
       return if @last_token && @statement.nil?
 
-      if k = @line.slice!(/^(if|unless)(?=#{@separator_pattern})/)
+      if k = @line.slice!(/\A(if|unless)(?=#{@separator_pattern})/)
         @statement = :if
         Token.new(k.to_sym)
-      elsif @line.slice!(/^then(?=#{@separator_pattern})?/)
+      elsif @line.slice!(/\Athen(?=#{@separator_pattern})?/)
         Token.new(:then)
-      elsif k = @line.slice!(/^el(se|s?if)(?=#{@separator_pattern})?/)
+      elsif k = @line.slice!(/\Ael(se|s?if)(?=#{@separator_pattern})?/)
         Token.new(k.to_sym)
-      elsif k = @line.slice!(/^(fi|end)(?=#{@separator_pattern})?/)
+      elsif k = @line.slice!(/\A(fi|end)(?=#{@separator_pattern})?/)
         @statement = nil
         Token.new(k.to_sym)
       end
@@ -90,14 +90,14 @@ module ReddishParser
     end
 
     def quote_word
-      if s = @line.slice!(/^#{QUOTE_WORD_PATTERN}/)
+      if s = @line.slice!(/\A#{QUOTE_WORD_PATTERN}/)
         type = s == '"' ? :dquote : :quote
         [type, read_quote_word(s)]
       end
     end
 
     def percent_word
-      if s = @line.slice!(/^#{PERCENT_WORD_PATTERN}/)
+      if s = @line.slice!(/\A#{PERCENT_WORD_PATTERN}/)
         _, quote, paren = s.split("")
         if quote == "!"
           quote = "Q"
@@ -111,8 +111,8 @@ module ReddishParser
 
     def read_quote_word(term)
       t = Regexp.escape(term)
-      word = @line.slice!(/^.*?(?<!\\)#{t}/)
-      raise SyntaxError.new("unterminated string") unless word
+      word = @line.slice!(/\A.*?(?<!\\)#{t}/m)
+      raise UnterminatedString.new unless word
       word.delete_suffix!(term).gsub(/\\#{t}/, term)
     end
 
@@ -124,7 +124,11 @@ module ReddishParser
     end
 
     def read_sperator
-      @line.slice!(/^#{@separator_pattern}+/)
+      @line.slice!(/\A#{@separator_pattern}+/)
+    end
+
+    def state
+      [@statement]
     end
   end
 end

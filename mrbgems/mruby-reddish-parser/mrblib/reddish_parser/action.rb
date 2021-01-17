@@ -102,8 +102,12 @@ module ReddishParser
       end
     end
 
-    def on_error(msg)
-      raise ReddishParser::ParserError.new(msg)
+    def on_error(msg, state)
+      if state.first.nil?
+        raise ReddishParser::ParserError.new(msg)
+      else
+        raise ReddishParser::UnexpectedKeyword.new(msg)
+      end
     end
   end
 end
